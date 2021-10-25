@@ -23,15 +23,21 @@
 *.out
 *.app
 
+# Build
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+*.build
+
 # CMake
 CMakeFiles/
 CMakeScripts/
 *.xcodeproj
-[Bb]uild/
 CMakeCache.txt
 cmake_install.cmake
 
 # OSX
 *.DS_Store
+
 
 # Visual Studio
