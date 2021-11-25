@@ -28,7 +28,7 @@ int main() {
     extensions.push_back("VK_KHR_get_physical_device_properties2");
 #endif
     
-    for (size_t i = 0; i < extensionCount; i++)
+    for (size_t i = 0; i < extensions.size(); i++)
     {
         // there are many ways to abstract away instance extension handling but
         // here we'll just use find_if
