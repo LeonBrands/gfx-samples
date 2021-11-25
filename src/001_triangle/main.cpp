@@ -485,7 +485,7 @@ int main() {
     // the next couple hundred lines will work towards the creation of a "VkPipeline"
     // VkPipeline represents (in this case) the graphics pipeline
     // to minimize runtime cost, the majority of information has to be provided up front
-    // this is different from OpenGL, where states are set to a default and you change them at will with gl...
+    // this is different from OpenGL, where states are set to a default and you change them at will with gl...()
     
     // shaders are compiled from glsl to spirv using a compiler (e.g. glslc)
     // spirv is a binary format that we'll reeed in as a char (uint8_t) array

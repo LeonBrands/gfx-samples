@@ -6,7 +6,7 @@ set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
 set(CMAKE_FOLDER CMakePredefinedTargets)
 
 # Project
-project(VkLectureSamples LANGUAGES CXX)
+project(VkSamples LANGUAGES CXX)
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
 
 # Add source
