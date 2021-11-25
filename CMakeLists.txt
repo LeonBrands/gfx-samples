@@ -10,15 +10,21 @@ project(VkLectureSamples LANGUAGES CXX)
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
 
 # Add source
-add_executable(VkLectureSamples src/main.cpp)
-target_compile_features(VkLectureSamples PRIVATE cxx_std_17)
-set_property(TARGET VkLectureSamples PROPERTY FOLDER "")
+add_executable(000_clear src/000_clear/main.cpp)
+target_compile_features(000_clear PRIVATE cxx_std_17)
+set_property(TARGET 000_clear PROPERTY FOLDER "")
+
+add_executable(001_triangle src/001_triangle/main.cpp)
+target_compile_features(001_triangle PRIVATE cxx_std_17)
+set_property(TARGET 001_triangle PROPERTY FOLDER "")
 
 # Add GLFW
 add_subdirectory(deps/glfw)
-target_link_libraries(VkLectureSamples glfw)
+target_link_libraries(000_clear glfw)
+target_link_libraries(001_triangle glfw)
 
 # Add Vulkan
 find_package(Vulkan REQUIRED)
 include_directories(${Vulkan_INCLUDE_DIRS})
-target_link_libraries(VkLectureSamples ${Vulkan_LIBRARIES})
+target_link_libraries(000_clear ${Vulkan_LIBRARIES})
+target_link_libraries(001_triangle ${Vulkan_LIBRARIES})

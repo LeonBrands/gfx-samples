@@ -445,6 +445,9 @@ int main() {
     }
     
     // Clean up our created resources
+    vkDestroySemaphore(device, imageWaitSemaphore, nullptr);
+    vkDestroySemaphore(device, presentWaitSemaphore, nullptr);
+    vkDestroySwapchainKHR(device, swapchain, nullptr);
     vkDestroyCommandPool(device, commandPool, nullptr);
     vkDestroyDevice(device, nullptr);
     vkDestroySurfaceKHR(instance, surface, nullptr);
