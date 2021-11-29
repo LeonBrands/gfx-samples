@@ -18,13 +18,19 @@ add_executable(001_triangle src/001_triangle/main.cpp)
 target_compile_features(001_triangle PRIVATE cxx_std_17)
 set_property(TARGET 001_triangle PROPERTY FOLDER "")
 
+add_executable(002_vertex_buffer src/002_vertex_buffer/main.cpp)
+target_compile_features(002_vertex_buffer PRIVATE cxx_std_17)
+set_property(TARGET 002_vertex_buffer PROPERTY FOLDER "")
+
 # Add GLFW
 add_subdirectory(deps/glfw)
 target_link_libraries(000_clear glfw)
 target_link_libraries(001_triangle glfw)
+target_link_libraries(002_vertex_buffer glfw)
 
 # Add Vulkan
 find_package(Vulkan REQUIRED)
 include_directories(${Vulkan_INCLUDE_DIRS})
 target_link_libraries(000_clear ${Vulkan_LIBRARIES})
 target_link_libraries(001_triangle ${Vulkan_LIBRARIES})
+target_link_libraries(002_vertex_buffer ${Vulkan_LIBRARIES})
