@@ -1,7 +1,9 @@
-#include <vulkan/vulkan.hpp>
+#include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
 
 #include <map>
+#include <array>
+#include <vector>
 
 int main() {
     // default GLFW window creation except we disable OpenGL context creation

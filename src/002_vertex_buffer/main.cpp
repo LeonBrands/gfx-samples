@@ -5,10 +5,12 @@
 // * Line 703-791: Vertex buffer creation
 // * Line 830-832: Bind vertex buffer and draw the number of verties
 
-#include <vulkan/vulkan.hpp>
+#include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
 
 #include <map>
+#include <array>
+#include <vector>
 #include <fstream>
 
 // a convenience macro for checking vulkan result values

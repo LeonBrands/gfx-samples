@@ -1,7 +1,9 @@
-#include <vulkan/vulkan.hpp>
+#include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
 
 #include <map>
+#include <array>
+#include <vector>
 #include <fstream>
 
 int main() {
