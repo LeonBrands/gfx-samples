@@ -1,7 +1,9 @@
-// this sample takes 002_vertex_buffer and restructures it with helper functions/classes
-// to make it easier to add more features.
-// no new concepts are introduced, the majority of this project's source code is the same as the
-// previous sample, other than some moving around/refactoring.
+// this sample uses the previous restructure to easily introduce a vertexbuffer
+// this is done to show how indexed drawing works in vulkan
+// but also to display the effectiveness of the abstractions
+// see lines
+// * 85-86 for index buffer creation (also the vertex buffer data was adjusted to reduce duplicate vertices)
+// * 127-128 for indexed drawing
 
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
@@ -63,8 +65,8 @@ int main() {
     THROW_IF_FAILED(vkCreateSemaphore(device, &semaphoreInfo, nullptr, &imageWaitSemaphore));
     THROW_IF_FAILED(vkCreateSemaphore(device, &semaphoreInfo, nullptr, &presentWaitSemaphore));
   
-    VkShaderModule vertexShader = Shader::load(device, "../src/003_restructure/vertex.spv");
-    VkShaderModule fragmentShader = Shader::load(device, "../src/003_restructure/fragment.spv");
+    VkShaderModule vertexShader = Shader::load(device, "../src/004_index_buffer/vertex.spv");
+    VkShaderModule fragmentShader = Shader::load(device, "../src/004_index_buffer/fragment.spv");
     
     VkPipelineLayout pipelineLayout = createPipelineLayout(device);
     VkPipeline pipeline = createPipeline(device, swap, renderpass, pipelineLayout, vertexShader, fragmentShader);
@@ -77,13 +79,13 @@ int main() {
         -0.5, -0.5, 0.0,     1.0, 0.0, 0.0,
         0.5, 0.5, 0.0,       0.0, 1.0, 0.0,
         -0.5, 0.5, 0.0,      0.0, 0.0, 1.0,
-        
-        -0.5, -0.5, 0.0,     1.0, 0.0, 0.0,
-        0.5, -0.5, 0.0,      0.0, 0.0, 1.0,
-        0.5, 0.5, 0.0,       0.0, 1.0, 0.0
+        0.5, -0.5, 0.0,      0.0, 0.0, 1.0
     };
-    
     std::unique_ptr<Buffer> vertexBuffer = Buffer::createUploadBuffer(device, physicalDevice, families, sizeof(float) * vertices.size(), vertices.data(), VK_BUFFER_USAGE_VERTEX_BUFFER_BIT);
+    
+    
+    std::vector<uint32_t> indices { 0, 1, 2, 0, 3, 1 };
+    std::unique_ptr<Buffer> indexBuffer = Buffer::createUploadBuffer(device, physicalDevice, families, sizeof(uint32_t) * indices.size(), indices.data(), VK_BUFFER_USAGE_INDEX_BUFFER_BIT);
     
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -124,7 +126,8 @@ int main() {
         vkCmdBindPipeline(cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
         VkDeviceSize offset = 0;
         vkCmdBindVertexBuffers(cmd, 0, 1, &vertexBuffer->buffer, &offset);
-        vkCmdDraw(cmd, vertices.size(), 1, 0, 0);
+        vkCmdBindIndexBuffer(cmd, indexBuffer->buffer, 0, VK_INDEX_TYPE_UINT32);
+        vkCmdDrawIndexed(cmd, indices.size(), 1, 0, 0, 0);
         vkCmdEndRenderPass(cmd);
         
         vkEndCommandBuffer(cmd); // end recording
@@ -173,6 +176,7 @@ int main() {
     // this still has to happen before destruction of VkDevice
     // so we'll do so manually here
     vertexBuffer.reset();
+    indexBuffer.reset();
     
     vkDestroyPipeline(device, pipeline, nullptr);
     vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
