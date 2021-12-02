@@ -22,11 +22,26 @@ add_executable(002_vertex_buffer src/002_vertex_buffer/main.cpp)
 target_compile_features(002_vertex_buffer PRIVATE cxx_std_17)
 set_property(TARGET 002_vertex_buffer PROPERTY FOLDER "")
 
+add_executable(003_restructure 
+    src/003_restructure/main.cpp 
+    src/003_restructure/utils/memory.hpp
+    src/003_restructure/utils/queue_families.hpp
+    src/003_restructure/utils/buffer.hpp
+    src/003_restructure/utils/layers.hpp
+    src/003_restructure/utils/physical_device.hpp
+    src/003_restructure/utils/swapchain.hpp
+    src/003_restructure/utils/shader.hpp
+    src/003_restructure/utils/preprocessor.hpp
+    src/003_restructure/utils/extensions.hpp)
+target_compile_features(003_restructure PRIVATE cxx_std_17)
+set_property(TARGET 003_restructure PROPERTY FOLDER "")
+
 # Add GLFW
 add_subdirectory(deps/glfw)
 target_link_libraries(000_clear glfw)
 target_link_libraries(001_triangle glfw)
 target_link_libraries(002_vertex_buffer glfw)
+target_link_libraries(003_restructure glfw)
 
 # Add Vulkan
 find_package(Vulkan REQUIRED)
@@ -34,3 +49,4 @@ include_directories(${Vulkan_INCLUDE_DIRS})
 target_link_libraries(000_clear ${Vulkan_LIBRARIES})
 target_link_libraries(001_triangle ${Vulkan_LIBRARIES})
 target_link_libraries(002_vertex_buffer ${Vulkan_LIBRARIES})
+target_link_libraries(003_restructure ${Vulkan_LIBRARIES})
