@@ -39,7 +39,7 @@ int main() {
     // default GLFW window creation except we disable OpenGL context creation
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow* window = glfwCreateWindow(800, 800, "VkLectureSamples", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(800, 800, "005_push_constants", nullptr, nullptr);
     
     VkInstance instance = createInstance();
     VkSurfaceKHR surface = createSurface(instance, window);
@@ -173,7 +173,7 @@ int main() {
         vkQueuePresentKHR(presentQueue, &presentInfo);
         
         // wait for everything to be finished before we continue to the next frame
-        // note: this is bad practice but the lecture is too short to teach other approaches
+        // note: this is bad practice but it allows us to focus on the rest of Vulkan first
         vkDeviceWaitIdle(device);
     }
     
@@ -227,7 +227,7 @@ VkInstance createInstance()
     VkApplicationInfo appInfo{};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
     appInfo.pNext = nullptr;
-    appInfo.pApplicationName = "VkLectureSamples";
+    appInfo.pApplicationName = "005_push_constants";
     appInfo.applicationVersion = VK_MAKE_VERSION(0, 0, 1);
     appInfo.pEngineName = "None";
     appInfo.engineVersion = VK_MAKE_VERSION(0, 0, 1);
