@@ -63,8 +63,8 @@ int main() {
     THROW_IF_FAILED(vkCreateSemaphore(device, &semaphoreInfo, nullptr, &imageWaitSemaphore));
     THROW_IF_FAILED(vkCreateSemaphore(device, &semaphoreInfo, nullptr, &presentWaitSemaphore));
   
-    VkShaderModule vertexShader = Shader::load(device, "../src/003_restructure/vertex.spv");
-    VkShaderModule fragmentShader = Shader::load(device, "../src/003_restructure/fragment.spv");
+    VkShaderModule vertexShader = Shader::load(device, "../003_restructure/vertex.spv");
+    VkShaderModule fragmentShader = Shader::load(device, "../003_restructure/fragment.spv");
     
     VkPipelineLayout pipelineLayout = createPipelineLayout(device);
     VkPipeline pipeline = createPipeline(device, swap, renderpass, pipelineLayout, vertexShader, fragmentShader);

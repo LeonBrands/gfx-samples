@@ -1,9 +1,12 @@
-// this sample uses the previous restructure to easily introduce a vertexbuffer
-// this is done to show how indexed drawing works in vulkan
-// but also to display the effectiveness of the abstractions
+// this sample introduces the concept of "push constants" to make the sample a bit more dynamic
+// push constants are a small amount of data that can be pushed directly onto the command buffer.
+// this allows us to easily change behaviour on a per-call basis
+// note however that push constants are very limited in size so in future samples we'll explore alternative approaches
+
 // see lines
-// * 85-86 for index buffer creation (also the vertex buffer data was adjusted to reduce duplicate vertices)
-// * 127-128 for indexed drawing
+// * 418-433 Added a push constant range to pipeline layout
+// * 134-136 Pushed constants into the command buffer
+// * fragment shader: declare & use push constants
 
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
@@ -12,6 +15,7 @@
 #include <array>
 #include <vector>
 #include <fstream>
+#include <cmath>
 
 #include "utils/preprocessor.hpp"
 #include "utils/extensions.hpp"
@@ -35,7 +39,7 @@ int main() {
     // default GLFW window creation except we disable OpenGL context creation
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow* window = glfwCreateWindow(800, 800, "004_index_buffer", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(800, 800, "005_push_constants", nullptr, nullptr);
     
     VkInstance instance = createInstance();
     VkSurfaceKHR surface = createSurface(instance, window);
@@ -65,8 +69,8 @@ int main() {
     THROW_IF_FAILED(vkCreateSemaphore(device, &semaphoreInfo, nullptr, &imageWaitSemaphore));
     THROW_IF_FAILED(vkCreateSemaphore(device, &semaphoreInfo, nullptr, &presentWaitSemaphore));
   
-    VkShaderModule vertexShader = Shader::load(device, "../src/004_index_buffer/vertex.spv");
-    VkShaderModule fragmentShader = Shader::load(device, "../src/004_index_buffer/fragment.spv");
+    VkShaderModule vertexShader = Shader::load(device, "../005_push_constants/vertex.spv");
+    VkShaderModule fragmentShader = Shader::load(device, "../005_push_constants/fragment.spv");
     
     VkPipelineLayout pipelineLayout = createPipelineLayout(device);
     VkPipeline pipeline = createPipeline(device, swap, renderpass, pipelineLayout, vertexShader, fragmentShader);
@@ -86,6 +90,8 @@ int main() {
     
     std::vector<uint32_t> indices { 0, 1, 2, 0, 3, 1 };
     std::unique_ptr<Buffer> indexBuffer = Buffer::createUploadBuffer(device, physicalDevice, families, sizeof(uint32_t) * indices.size(), indices.data(), VK_BUFFER_USAGE_INDEX_BUFFER_BIT);
+    
+    float t = 0;
     
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -124,6 +130,11 @@ int main() {
         vkCmdBeginRenderPass(cmd, &renderpassBegin, VK_SUBPASS_CONTENTS_INLINE);
         
         vkCmdBindPipeline(cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
+        
+        t += 0.01f;
+        float fade = sin(t);
+        vkCmdPushConstants(cmd, pipelineLayout, VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(float), &fade);
+        
         VkDeviceSize offset = 0;
         vkCmdBindVertexBuffers(cmd, 0, 1, &vertexBuffer->buffer, &offset);
         vkCmdBindIndexBuffer(cmd, indexBuffer->buffer, 0, VK_INDEX_TYPE_UINT32);
@@ -216,7 +227,7 @@ VkInstance createInstance()
     VkApplicationInfo appInfo{};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
     appInfo.pNext = nullptr;
-    appInfo.pApplicationName = "004_index_buffer";
+    appInfo.pApplicationName = "005_push_constants";
     appInfo.applicationVersion = VK_MAKE_VERSION(0, 0, 1);
     appInfo.pEngineName = "None";
     appInfo.engineVersion = VK_MAKE_VERSION(0, 0, 1);
@@ -404,6 +415,11 @@ VkRenderPass createRenderpass(VkDevice device, VkFormat format)
 
 VkPipelineLayout createPipelineLayout(VkDevice device)
 {
+    VkPushConstantRange pushConstants {};
+    pushConstants.size = sizeof(float);
+    pushConstants.offset = 0;
+    pushConstants.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+    
     // the pipeline layout describes how GPU resources (textures, buffers, etc) are bound to the shader
     // so that the shader can access it
     // our sample shaders have no bindings so this structure receives default values:
@@ -413,8 +429,8 @@ VkPipelineLayout createPipelineLayout(VkDevice device)
     pipelineLayoutInfo.flags = 0;
     pipelineLayoutInfo.setLayoutCount = 0;
     pipelineLayoutInfo.pSetLayouts = nullptr;
-    pipelineLayoutInfo.pushConstantRangeCount = 0;
-    pipelineLayoutInfo.pPushConstantRanges = nullptr;
+    pipelineLayoutInfo.pushConstantRangeCount = 1;
+    pipelineLayoutInfo.pPushConstantRanges = &pushConstants;
     
     VkPipelineLayout pipelineLayout;
     THROW_IF_FAILED(vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &pipelineLayout));

@@ -462,7 +462,7 @@ int main() {
     
     // shaders are compiled from glsl to spirv using a compiler (e.g. glslc)
     // spirv is a binary format that we'll reeed in as a char (uint8_t) array
-    std::ifstream vertexFile("../src/002_vertex_buffer/vertex.spv", std::ios::ate | std::ios::binary);
+    std::ifstream vertexFile("../002_vertex_buffer/vertex.spv", std::ios::ate | std::ios::binary);
     size_t fileSize = (size_t) vertexFile.tellg();
     std::vector<char> vertexFileBuffer(fileSize);
     vertexFile.seekg(0);
@@ -481,7 +481,7 @@ int main() {
     THROW_IF_FAILED(vkCreateShaderModule(device, &vertexShaderInfo, nullptr, &vertexShader));
     
     // the same process is done for our fragment shader
-    std::ifstream fragmentFile("../src/002_vertex_buffer/fragment.spv", std::ios::ate | std::ios::binary);
+    std::ifstream fragmentFile("../002_vertex_buffer/fragment.spv", std::ios::ate | std::ios::binary);
     fileSize = (size_t) fragmentFile.tellg();
     std::vector<char> fragmentFileBuffer(fileSize);
     fragmentFile.seekg(0);
