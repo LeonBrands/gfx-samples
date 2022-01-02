@@ -1,14 +1,14 @@
 add_executable(000_clear 000_clear/main.cpp)
 target_compile_features(000_clear PRIVATE cxx_std_17)
-set_property(TARGET 000_clear PROPERTY FOLDER "samples/vk")
+set_property(TARGET 000_clear PROPERTY FOLDER "gfx-samples/vk")
 
 add_executable(001_triangle 001_triangle/main.cpp)
 target_compile_features(001_triangle PRIVATE cxx_std_17)
-set_property(TARGET 001_triangle PROPERTY FOLDER "samples/vk")
+set_property(TARGET 001_triangle PROPERTY FOLDER "gfx-samples/vk")
 
 add_executable(002_vertex_buffer 002_vertex_buffer/main.cpp)
 target_compile_features(002_vertex_buffer PRIVATE cxx_std_17)
-set_property(TARGET 002_vertex_buffer PROPERTY FOLDER "samples/vk")
+set_property(TARGET 002_vertex_buffer PROPERTY FOLDER "gfx-samples/vk")
 
 add_executable(003_restructure 
     003_restructure/main.cpp 
@@ -22,7 +22,7 @@ add_executable(003_restructure
     003_restructure/utils/preprocessor.hpp
     003_restructure/utils/extensions.hpp)
 target_compile_features(003_restructure PRIVATE cxx_std_17)
-set_property(TARGET 003_restructure PROPERTY FOLDER "samples/vk")
+set_property(TARGET 003_restructure PROPERTY FOLDER "gfx-samples/vk")
 
 add_executable(004_index_buffer
     004_index_buffer/main.cpp 
@@ -36,7 +36,7 @@ add_executable(004_index_buffer
     004_index_buffer/utils/preprocessor.hpp
     004_index_buffer/utils/extensions.hpp)
 target_compile_features(004_index_buffer PRIVATE cxx_std_17)
-set_property(TARGET 004_index_buffer PROPERTY FOLDER "samples/vk")
+set_property(TARGET 004_index_buffer PROPERTY FOLDER "gfx-samples/vk")
 
 add_executable(005_push_constants
     005_push_constants/main.cpp 
@@ -50,7 +50,7 @@ add_executable(005_push_constants
     005_push_constants/utils/preprocessor.hpp
     005_push_constants/utils/extensions.hpp)
 target_compile_features(005_push_constants PRIVATE cxx_std_17)
-set_property(TARGET 005_push_constants PROPERTY FOLDER "samples/vk")
+set_property(TARGET 005_push_constants PROPERTY FOLDER "gfx-samples/vk")
 
 target_link_libraries(000_clear glfw)
 target_link_libraries(001_triangle glfw)
